@@ -2,6 +2,7 @@
 # The Shell Script Of A simple Todo-list
 
 function finish {
+    arg=$OPTARG
     cat ./.Todo.txt | while read line
     do
         local head=${line:0:1}
@@ -23,7 +24,7 @@ function finish {
 function list {
     cat ./.Todo.txt | while read line
     do
-        head=${line:0:1}
+        local head=${line:0:1}
         if [ $head = '#' ]
         then
             :
@@ -33,3 +34,26 @@ function list {
     done
     echo "Please finish them."
 }
+
+function add {
+    local sum=`grep -c '[[:digit:]]\..*' .Todo.txt`
+    echo $[ sum + 1 ].$OPTARG >> .Todo.txt
+}
+
+while getopts ":a:lf:" opt
+do
+    case $opt in
+        a)
+            add
+            ;;
+        l)
+            list
+            ;;
+        f)
+            finish
+            ;;
+        ?)
+            echo "error"
+            exit 1
+    esac
+done
