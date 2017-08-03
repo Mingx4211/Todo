@@ -11,15 +11,15 @@ function finish {
             echo $line >> .temp
         elif [ $head -eq $arg ]
         then
-            local finished=${line:1}
+            temp=${line:1}
+            echo '#'$temp >> .temp
         elif [ $head -gt $arg ]
         then
             echo $[ $head - 1 ]${line:1} >> .temp
         fi
     done
-    echo '#'$finished >> .temp
     rm .Todo.txt && mv .temp .Todo.txt
-    }
+}
 
 function list {
     cat ./.Todo.txt | while read line
