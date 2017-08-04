@@ -1,5 +1,6 @@
 #!/bin/bash
 # The Shell Script Of A simple Todo-list
+exec 2> /dev/null
 
 function finish {
     arg=$OPTARG
@@ -37,10 +38,20 @@ function list {
 
 function add {
     local sum=`grep -c '[[:digit:]]\..*' .Todo.txt`
-    echo $[ sum + 1 ].$OPTARG >> .Todo.txt
+    local Input=`zenity --entry \
+        --width=300 \
+        --height=150 \
+        --title="Add new term" \
+        --text="Add something to the Todolist" `
+    if [ -z $Input ]
+    then
+        :
+    else
+        echo $[ sum + 1 ].$Input >> .Todo.txt
+    fi
 }
 
-while getopts ":a:lf:" opt
+while getopts ":alf:" opt
 do
     case $opt in
         a)
