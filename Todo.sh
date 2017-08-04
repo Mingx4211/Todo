@@ -2,6 +2,7 @@
 # The Shell Script Of A simple Todo-list
 exec 2> /dev/null
 
+cp ./zenity.sh .temp.sh
 function finish {
     arg=$OPTARG
     cat ./.Todo.txt | while read line
@@ -22,7 +23,7 @@ function finish {
     rm .Todo.txt && mv .temp .Todo.txt
 }
 
-function list {
+function filter {
     cat ./.Todo.txt | while read line
     do
         local head=${line:0:1}
@@ -30,11 +31,13 @@ function list {
         then
             :
         else
-            echo $line
+            num=$[ $num + 1]
+            echo "        $num \"$line\" \\" >> .temp.sh   
         fi
     done
-    echo "Please finish them."
+    echo  "        $[ $num + 1 ] \"Please finish them\"" >> .temp.sh
 }
+
 
 function add {
     local sum=`grep -c '[[:digit:]]\..*' .Todo.txt`
@@ -51,17 +54,16 @@ function add {
     fi
 }
 
-while getopts ":alf:" opt
+while getopts ":al" opt
 do
     case $opt in
         a)
             add
             ;;
         l)
-            list
-            ;;
-        f)
-            finish
+            filter
+            bash .temp.sh
+            rm .temp.sh
             ;;
         ?)
             echo "error"
