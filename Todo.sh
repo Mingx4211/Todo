@@ -54,7 +54,8 @@ function add {
     fi
 }
 
-while getopts ":al" opt
+
+while getopts ":alf:" opt
 do
     case $opt in
         a)
@@ -64,6 +65,9 @@ do
             filter
             bash .temp.sh
             rm .temp.sh
+            ;;
+        f)
+            finish
             ;;
         ?)
             echo "error"
