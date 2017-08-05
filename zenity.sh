@@ -4,5 +4,5 @@ zenity --list \
         --title="To do list" \
         --width=500 \
         --height=500 \
-        --separator="+" \
+        --separator=\\n \
         --column="Check" --column="Content" \

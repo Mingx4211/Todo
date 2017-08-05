@@ -4,7 +4,7 @@
 #
 1.Add the Todo
 2.Add the finish function
-#.Add the add function
-3.Add the move function
-4.Add the Graphic userinterface
-#.more
+3.Add the add function
+4.Add the move function
+5.Add the Graphic userinterface
+6.more

@@ -3,8 +3,7 @@
 exec 2> /dev/null
 
 cp ./zenity.sh .temp.sh
-function finish {
-    arg=$OPTARG
+function FinishByNum {
     cat ./.Todo.txt | while read line
     do
         local head=${line:0:1}
@@ -21,6 +20,17 @@ function finish {
         fi
     done
     rm .Todo.txt && mv .temp .Todo.txt
+}
+
+function FinishFromChecklist {
+    count=0
+    cat ./.Finished | while read line
+    do
+        local head=${line:0:1}
+        arg=$[ $head - $count ]
+        FinishByNum
+        count=$[ $count + 1 ]
+    done
 }
 
 function filter {
@@ -55,7 +65,7 @@ function add {
 }
 
 
-while getopts ":alf:" opt
+while getopts ":alh" opt
 do
     case $opt in
         a)
@@ -63,12 +73,12 @@ do
             ;;
         l)
             filter
-            bash .temp.sh
-            rm .temp.sh
+            bash .temp.sh > .Finished
+            FinishFromChecklist
+            rm .temp.sh .Finished
             ;;
-        f)
-            finish
-            ;;
+        h)
+            cat ./README.md
         ?)
             echo "error"
             exit 1
